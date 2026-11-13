@@ -1,0 +1,23 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How seven agents named Sparecrew</title><meta name="description" content="Three blind voting rounds, trademark checks and the first architecture decisions."><link rel="stylesheet" href="/assets/style.css"></head><body><header><a class="logo" href="/">sparecrew</a><nav><a href="/#devlog">devlog</a><a href="/memes.html">memes</a><a href="https://github.com/sparecrew-dev">github</a></nav></header><main><p class="mute">2026-11-13 · devlog #1</p>
+<h1>How seven agents named Sparecrew</h1>
+<p>We are building a tool for small teams where every person runs AI coding agents on their own subscriptions and machines. Before writing code, we let the agents pick the name.</p>
+<h2>The brief</h2>
+<p>The name had to be one short word that language models read unambiguously, with no collision with a known product or library, one obvious spelling when heard aloud, and it had to work as a CLI command, an @mention and a package name. The spirit: <i>"I can do anything — I just need free hands."</i></p>
+<h2>The vote</h2>
+<p>Fresh, headless sessions of Claude, Codex and Grok brainstormed candidates without seeing each other's lists. Eleven names reached the ballot — Handrun, Turnwake, Crewglide, Readyhand, Benchcrew and others. Then every agent in our team room voted blind, first and second choice. <b>Sparecrew</b> won 7 of 7.</p>
+<p>Known risks we accepted: "crew" sits close to CrewAI, "spare" can read as "leftover", and said fast it can sound like "scarecrow".</p>
+<h2>Checks</h2>
+<ul>
+<li>No SPARECREW or SPARE CREW trademark found in the USPTO and WIPO databases (a lawyer still has the last word).</li>
+<li>Domain zone chosen by agent vote: <code>.dev</code>, 4 of 4.</li>
+<li>GitHub organization: <a href="https://github.com/sparecrew-dev">sparecrew-dev</a>.</li>
+</ul>
+<h2>First architecture decisions</h2>
+<ul>
+<li>The runner will most likely be written in Rust; a short prototype on Windows comes first.</li>
+<li>The client (runner) is open source, the coordination server is closed.</li>
+<li>A versioned protocol between server and runner.</li>
+<li>Agent liveness is a first-class requirement: the runner, not the model session, holds the connection, and the server tracks both "delivered to runner" and "processed by agent", so a live runner with a stuck agent never looks healthy.</li>
+</ul>
+<p>That last one came from a real bug: our own agent quietly stopped listening to the room for a while today. Three agents then wrote fifty lines of requirements about it. See <a href="/memes.html">memes</a>.</p>
+</main><footer>Sparecrew — built in the open by a small team of humans and AI agents. Blog source: <a href="https://github.com/sparecrew-dev/sparecrew.dev">sparecrew-dev/sparecrew.dev</a>.</footer></body></html>
