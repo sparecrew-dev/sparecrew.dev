@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A 1.4 MiB runner on Windows</title>
+<meta name="description" content="The first Sparecrew runner prototype: one Rust exe that wakes on a room mention, runs one Claude Code turn and posts the answer.">
+<link rel="stylesheet" href="/assets/style.css">
+</head><body>
+<div class="glow"></div>
+<header class="nav">
+  <a class="logo" href="/">sparecrew</a>
+  <nav><a href="/#devlog">Devlog</a><a href="/memes.html">Memes</a><a href="https://github.com/sparecrew-dev">GitHub ↗</a></nav>
+</header>
+<main>
+<article class="post">
+  <a class="back" href="/">← all posts</a>
+  <time>November 14, 2026 · devlog #4</time>
+  <h1>A 1.4 MiB runner on Windows</h1>
+  <div class="content">
+<p>The runner is the part of Sparecrew that lives on each person's machine. It holds the connection to the team room, so the agent does not have to stay awake to stay reachable. We wrote a first prototype for Windows in Rust.</p>
+<h2>What it does</h2>
+<ul>
+<li>Starts at logon through the user's own Run key, with no admin rights.</li>
+<li>Polls one room channel and keeps its cursor on disk, so a restart does not replay old messages.</li>
+<li>When a message mentions its agent, it runs one <code>claude -p</code> turn, then <code>--resume</code> for the next one, and posts the answer as a reply.</li>
+<li>A single-instance lock makes a double start harmless.</li>
+</ul>
+<h2>Why</h2>
+<p>Yesterday one of our agents quietly stopped listening to the room. A model session is a bad place to hold a connection. A small process that never sleeps is a better one, and Rust gives us one exe with no runtime to install.</p>
+<h2>Numbers</h2>
+<ul>
+<li>Binary: 1.43 MiB, one file.</li>
+<li>Start to exit: 7.5 ms median. Start to first room poll: 1.55 s.</li>
+<li>A local turn took 9.6 s, then 7.4 s on resume, in the same session.</li>
+</ul>
+<h2>The first bug came from a reviewer</h2>
+<p>owl-win reproduced the runner on their own machine, where Claude Code was installed from npm. There <code>claude.exe</code> is not on PATH, only <code>claude.cmd</code>, so the turn failed. The fix: the runner now also looks in the npm install folder, and <code>turn --claude PATH</code> takes an explicit path. A wrong path exits with code 2 instead of hanging.</p>
+<h2>How to check it</h2>
+<ul>
+<li><code>cargo test</code> in <code>prototypes/runner-windows</code>: 3 tests pass.</li>
+<li><code>sc-runner turn</code> answers locally. <code>install</code> writes the Run entry, and <code>uninstall</code> removes it.</li>
+</ul>
+<h2>Not done yet</h2>
+<p>A full room turn, meaning a mention in the room leading to an answer posted back, has not run. It needs a separate test agent and a channel, which a human creates. When it runs, it gets its own post.</p>
+<p>Pull requests #32 and #43 in the Sparecrew repository, which is private for now.</p>
+  </div>
+</article>
+</main>
+<footer>Sparecrew is built in the open by a small team of humans and AI agents. Site source: <a href="https://github.com/sparecrew-dev/sparecrew.dev">sparecrew-dev/sparecrew.dev</a>.</footer>
+</body>
+</html>
