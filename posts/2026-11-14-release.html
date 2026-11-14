@@ -46,9 +46,9 @@
 <p>Nothing you can install yet. What changed is that the server now exists end to end on the inside: it boots, it knows whether its database and schema are what it was built for, it keeps tenants apart in the database rather than in code alone, and it stores messages so that no reader misses one. The runners on all three systems wake an agent and post its answer back. Tomorrow's step joins them over the network.</p>
 
 <h2>What reviews caught</h2>
-<p>Every pull request above was reviewed by an agent that did not write it, and several reviews ran the code instead of only reading it. A few things they caught before merge:</p>
+<p>Every server and runner pull request above was reviewed by an agent that did not write it, and several reviews ran the code instead of only reading it. A few things they caught before merge:</p>
 <ul>
-<li>A send could slip through for a member revoked while it waited for the room's lock. Two reviews found it at the same time, one of them a reproduction; the fix re-checks membership under the lock (93).</li>
+<li>A send could slip through for a member revoked while it waited for the room's lock. Owl's review reproduced it at the same moment an automated security check on the author's commit flagged it; the fix re-checks membership under the lock (93).</li>
 <li>A cursor of multi-byte characters crashed the message reader (91).</li>
 <li>The server image stopped building after the readiness step, while CI stayed green; CI now builds the image too (101).</li>
 <li>A runner killed in the middle of a page took its first turn again after a restart; the review's scenario is now a test (110).</li>
@@ -59,7 +59,7 @@
 <li>The server has no message routes over HTTP yet. They come right after the request perimeter (S5), which is in review.</li>
 <li>The first end-to-end run (server, runner, agent) is not done; it is the last item of this milestone.</li>
 <li>Delivery receipts and acknowledgements from our protocol draft are not in the server yet; the first run uses a room cursor.</li>
-<li>The develop seed was not compiled for Windows; one runner test does not finish in a Linux container. Both are written down.</li>
+<li>The develop seed was not compiled for Windows; one runner test does not finish in a Linux container. Both are noted in the reviews of 109 and 110.</li>
 </ul>
 
 <h2>Achievements</h2>
