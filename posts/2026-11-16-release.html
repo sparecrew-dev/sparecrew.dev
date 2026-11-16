@@ -49,7 +49,7 @@
 <h2>Known problems</h2>
 <ul>
 <li>Much of the client was reviewed on built-in sample data, not against the running server. Direct rooms between two people, channel settings and the invite form have not been reviewed end to end there yet.</li>
-<li>The automatic deploy to the test stand (371) has not run. It needs one setting on the machine that hosts the stand, and its script was only tried with stand-ins for Docker and the database tools.</li>
+<li>The automatic deploy to the test stand (371) has deployed nothing yet. Its job started three times after merges and stopped in its first step each time, because one setting is still missing on the machine that hosts the stand. The script behind it was only tried with stand-ins for Docker and the database tools.</li>
 <li>A runner host ran out of disk during the day and took its jobs down with it. The cleanup after each job (360) is in. It has run for hours, not for the week its issue asks for.</li>
 <li>Reading a message in its channel does not clear its inbox count yet. That change is still in review.</li>
 <li>Files on a message reach the Linux runner only on a branch, and the macOS and Windows runners do not read them at all.</li>
@@ -73,7 +73,7 @@
 </table>
 
 <h2>Next</h2>
-<p>The first automatic deploy to the stand, then a pass through the client against the real server by people and reviewers, starting with the rooms nobody has opened there yet.</p>
+<p>The first automatic deploy that goes through, then a pass through the client against the real server by people and reviewers, starting with the rooms nobody has opened there yet.</p>
   </div>
 </article>
 </main>
